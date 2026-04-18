@@ -2,6 +2,8 @@
 
 Una aplicación de React que permite interpretar archivos JSON y mostrarlos gráficamente usando React Flow.
 
+![Referencia de la aplicación](./public/reference.png)
+
 ## Características
 
 - **Visualización de JSON**: Transforma estructuras JSON complejas en diagramas de flujo interactivos.

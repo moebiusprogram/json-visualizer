@@ -16,7 +16,7 @@ export function jsonToFlow(json: unknown) {
     const node: Node = {
       id,
       data: { label: displayLabel },
-      position: { x: 0, y: 0 }, // We'll let a layout or default positioning handle this
+      position: { x: 0, y: 0 },
       type: typeof data === 'object' && data !== null ? 'default' : 'output',
       style: {
         background: '#333',
@@ -56,16 +56,13 @@ export function jsonToFlow(json: unknown) {
 
   traverse(json);
 
-  // Simple layout: vertical spacing
+  const nodeMap = new Map<string, Node>(nodes.map(n => [n.id, n]));
   const levels: { [key: number]: number } = {};
-
-  // Re-calculate positions roughly
-  // This is a very basic positioning logic
   const spacingX = 250;
   const spacingY = 100;
 
-  function assignPositions(nodeId: string, depth: number) {
-    const node = nodes.find(n => n.id === nodeId);
+  function assignPositions(id: string, depth: number) {
+    const node = nodeMap.get(id);
     if (!node) return;
 
     if (!levels[depth]) levels[depth] = 0;
@@ -77,7 +74,7 @@ export function jsonToFlow(json: unknown) {
 
     levels[depth]++;
 
-    const childEdges = edges.filter(e => e.source === nodeId);
+    const childEdges = edges.filter(e => e.source === id);
     childEdges.forEach(edge => assignPositions(edge.target, depth + 1));
   }
 
